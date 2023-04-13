@@ -18,16 +18,16 @@ void initializeAssignments(Assignment** assignment1,Assignment** assignment2,int
 }
 
 void assignmentsInterface(Assignment** assignment,int number) {
-    char* buffer = malloc(100*sizeof(*buffer));
+    char* buffer = (char*)malloc(100*sizeof(*buffer));
     for(int i = 0 ; i < number ; i++) {
         fflush(stdin);
-        assignment[i] = malloc(sizeof(*(assignment[i])));
+        assignment[i] = (Assignment*)malloc(sizeof(*(assignment[i])));
         printf("\n------TAREA %d------\n",i+1);
         assignment[i]->assignmentID = i + 1;
         printf("Descripcion de la tarea: ");
         gets(buffer);
         fflush(stdin);
-        assignment[i]->description = malloc(strlen(buffer) + 1);
+        assignment[i]->description = (char*)malloc(strlen(buffer) + 1);
         strcpy(assignment[i]->description,buffer);
         printf("\nDuracion de la tarea: ");
         scanf("%d",&assignment[i]->duration);
@@ -42,7 +42,7 @@ void searchAssignmentByKeyword(Assignment** assignment,int number,char* keyword)
             printf("\n------TAREA CON PALABRA CLAVE %s ENCONTRADA------\n",keyword);
             printf("ID: %d",assignment[i]->assignmentID);
             printf("\nDescripcion de la tarea: %s",assignment[i]->description);
-            printf("\nDuracion de la tarea: %d",assignment[i]->duration);
+            printf("\nDuracion de la tarea: %d\n",assignment[i]->duration);
         }
     }
 }
@@ -54,7 +54,7 @@ void searchAssignmentByID(Assignment** assignment,int number,int id) {
             printf("\n------TAREA DE ID %d------\n",id);
             printf("ID: %d",assignment[i]->assignmentID);
             printf("\nDescripcion de la tarea: %s",assignment[i]->description);
-            printf("\nDuracion de la tarea: %d",assignment[i]->duration);
+            printf("\nDuracion de la tarea: %d\n",assignment[i]->duration);
         }
     }
 }
@@ -67,7 +67,7 @@ void moveAssignment(Assignment** assignmentCompleted,Assignment** assignmentPend
         scanf("%d",&option);
         switch(option) {
             case 1:
-                assignmentCompleted[i] = malloc(sizeof(*(assignmentCompleted[i])));
+                assignmentCompleted[i] = (Assignment*)malloc(sizeof(*(assignmentCompleted[i])));
                 assignmentCompleted[i] = assignmentPending[i];
                 assignmentPending[i] = NULL;
                 break;
@@ -107,22 +107,4 @@ void freeMemory(Assignment** assignment,int number) {
         free(assignment[i]);
     }
     free(assignment);
-}
-
-int main(int argc,char** argv) {
-    int numberAssignments;
-    printf("Ingresar la cantidad de tareas a realizar: ");
-    scanf("%d",&numberAssignments);
-    Assignment** assignments = malloc(numberAssignments*sizeof(*assignments));
-    Assignment** assignmentsCompleted = malloc(numberAssignments*sizeof(*assignmentsCompleted));
-    initializeAssignments(assignments,assignmentsCompleted,numberAssignments);
-    assignmentsInterface(assignments,numberAssignments);
-    searchAssignmentByKeyword(assignments,numberAssignments,'ola');
-    searchAssignmentByID(assignments,numberAssignments,2);
-    moveAssignment(assignmentsCompleted,assignments,numberAssignments);
-    showCompletedAssignments(assignmentsCompleted,numberAssignments);
-    showPendingAssignments(assignments,numberAssignments);
-    freeMemory(assignments,numberAssignments);
-    freeMemory(assignmentsCompleted,numberAssignments);
-    return 0;
 }
