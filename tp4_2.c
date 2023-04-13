@@ -20,15 +20,18 @@ void initializeAssignments(Assignment** assignment1,Assignment** assignment2,int
 void assignmentsInterface(Assignment** assignment,int number) {
     char* buffer = malloc(100*sizeof(*buffer));
     for(int i = 0 ; i < number ; i++) {
+        fflush(stdin);
         assignment[i] = malloc(sizeof(*(assignment[i])));
         printf("\n------TAREA %d------\n",i+1);
         assignment[i]->assignmentID = i + 1;
         printf("Descripcion de la tarea: ");
         gets(buffer);
+        fflush(stdin);
         assignment[i]->description = malloc(strlen(buffer) + 1);
         strcpy(assignment[i]->description,buffer);
         printf("\nDuracion de la tarea: ");
         scanf("%d",&assignment[i]->duration);
+        fflush(stdin);
     }
     free(buffer);
 }
@@ -36,7 +39,7 @@ void assignmentsInterface(Assignment** assignment,int number) {
 void moveAssignment(Assignment** assignmentCompleted,Assignment** assignmentPending,int number) {
     int option;
     for(int i = 0 ; i < number ; i++) {
-        printf("\nSe realizo la tarea %d?\n1-SI\n2-NO");
+        printf("\nSe realizo la tarea %d?\n1-SI\n2-NO\n",i+1);
         scanf("%d",&option);
         switch(option) {
             case 1:
@@ -47,10 +50,11 @@ void moveAssignment(Assignment** assignmentCompleted,Assignment** assignmentPend
             case 2:
                 break;
         }
+        fflush(stdin);
     }
 }
 
-void showPendingAssigments(Assignment** assignment,int number) {
+void showPendingAssignments(Assignment** assignment,int number) {
     printf("\n------TAREAS PENDIENTES------\n");
     for(int i = 0 ; i < number ; i++) {
         if(assignment[i] != NULL) {            
@@ -66,8 +70,8 @@ void showPendingAssigments(Assignment** assignment,int number) {
     free(assignment);
 }
 
-void showCompletedAssigments(Assignment** assignment,int number) {
-    printf("\n------TAREAS PENDIENTES------\n");
+void showCompletedAssignments(Assignment** assignment,int number) {
+    printf("\n------TAREAS COMPLETADAS------\n");
     for(int i = 0 ; i < number ; i++) {
         if(assignment[i] != NULL) {
             printf("\n------TAREA %d------\n",i+1);
@@ -91,7 +95,7 @@ int main(int argc,char** argv) {
     initializeAssignments(assignments,assignmentsCompleted,numberAssignments);
     assignmentsInterface(assignments,numberAssignments);
     moveAssignment(assignmentsCompleted,assignments,numberAssignments);
-    showCompletedAssigments(assignmentsCompleted,numberAssignments);
-    showPendingAssigments(assignments,numberAssignments);
+    showCompletedAssignments(assignmentsCompleted,numberAssignments);
+    showPendingAssignments(assignments,numberAssignments);
     return 0;
 }
