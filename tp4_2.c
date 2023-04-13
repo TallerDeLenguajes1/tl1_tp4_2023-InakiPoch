@@ -47,6 +47,19 @@ void searchAssignmentByKeyword(Assignment** assignment,int number,char* keyword)
     }
 }
 
+
+void searchAssignmentByID(Assignment** assignment,int number,int id) {
+    for(int i = 0 ; i < number ; i++) {
+        if(assignment[i]->assignmentID == id) {
+            printf("\n------TAREA DE ID %d------\n",id);
+            printf("ID: %d",assignment[i]->assignmentID);
+            printf("\nDescripcion de la tarea: %s",assignment[i]->description);
+            printf("\nDuracion de la tarea: %d",assignment[i]->duration);
+        }
+    }
+}
+
+
 void moveAssignment(Assignment** assignmentCompleted,Assignment** assignmentPending,int number) {
     int option;
     for(int i = 0 ; i < number ; i++) {
@@ -75,10 +88,6 @@ void showPendingAssignments(Assignment** assignment,int number) {
             printf("\nDuracion de la tarea: %d",assignment[i]->duration);
         }
     }
-    for(int i = 0 ; i < number ; i++) {
-        free(assignment[i]);
-    }
-    free(assignment);
 }
 
 void showCompletedAssignments(Assignment** assignment,int number) {
@@ -91,6 +100,9 @@ void showCompletedAssignments(Assignment** assignment,int number) {
             printf("\nDuracion de la tarea: %d",assignment[i]->duration);
         }
     }
+}
+
+void freeMemory(Assignment** assignment,int number) {
     for(int i = 0 ; i < number ; i++) {
         free(assignment[i]);
     }
@@ -104,10 +116,13 @@ int main(int argc,char** argv) {
     Assignment** assignments = malloc(numberAssignments*sizeof(*assignments));
     Assignment** assignmentsCompleted = malloc(numberAssignments*sizeof(*assignmentsCompleted));
     initializeAssignments(assignments,assignmentsCompleted,numberAssignments);
-    searchAssignmentByKeyword(assignments,numberAssignments,'ola');
     assignmentsInterface(assignments,numberAssignments);
+    searchAssignmentByKeyword(assignments,numberAssignments,'ola');
+    searchAssignmentByID(assignments,numberAssignments,2);
     moveAssignment(assignmentsCompleted,assignments,numberAssignments);
     showCompletedAssignments(assignmentsCompleted,numberAssignments);
     showPendingAssignments(assignments,numberAssignments);
+    freeMemory(assignments,numberAssignments);
+    freeMemory(assignmentsCompleted,numberAssignments);
     return 0;
 }
