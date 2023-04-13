@@ -45,6 +45,20 @@ void moveAssignment(Assignment** assignment,int number) {
     }
 }
 
+void showPendingAssigments(Assignment** assignment,int number) {
+    printf("\n------TAREAS PENDIENTES------\n");
+    for(int i = 0 ; i < number ; i++) {
+        printf("\n------TAREA %d------\n",i+1);
+        printf("ID: %d",assignment[i]->assignmentID);
+        printf("\nDescripcion de la tarea: %s",assignment[i]->description);
+        printf("\nDuracion de la tarea: %d",assignment[i]->duration);
+    }
+    for(int i = 0 ; i < number ; i++) {
+        free(assignment[i]);
+    }
+    free(assignment);
+}
+
 int main(int argc,char** argv) {
     int numberAssignments;
     printf("Ingresar la cantidad de tareas a realizar: ");
