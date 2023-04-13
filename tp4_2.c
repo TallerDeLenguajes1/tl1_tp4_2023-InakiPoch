@@ -8,6 +8,15 @@ typedef struct Tarea {
     int duration;
 } Assignment;
 
+void initializeAssignments(Assignment** assignment1,Assignment** assignment2,int number) {
+    for(int i = 0 ; i < number ; i++) {
+        assignment1[i] = NULL;
+    }
+    for(int i = 0 ; i < number ; i++) {
+        assignment2[i] = NULL;
+    }
+}
+
 void assignmentsInterface(Assignment** assignment,int number) {
     char* buffer = malloc(100*sizeof(*buffer));
     for(int i = 0 ; i < number ; i++) {
@@ -24,20 +33,16 @@ void assignmentsInterface(Assignment** assignment,int number) {
     free(buffer);
 }
 
-void moveAssignment(Assignment** assignment,int number) {
+void moveAssignment(Assignment** assignmentCompleted,Assignment** assignmentPending,int number) {
     int option;
-    Assignment** assignmentsCompleted = malloc(number*sizeof(*assignmentsCompleted));
-    for(int i = 0 ; i < number ; i++) {
-        assignmentsCompleted[i] = NULL;
-    }
     for(int i = 0 ; i < number ; i++) {
         printf("\nSe realizo la tarea %d?\n1-SI\n2-NO");
         scanf("%d",&option);
         switch(option) {
             case 1:
-                assignmentsCompleted[i] = malloc(sizeof(*(assignmentsCompleted[i])));
-                assignmentsCompleted[i] = assignment[i];
-                assignment[i] = NULL;
+                assignmentCompleted[i] = malloc(sizeof(*(assignmentCompleted[i])));
+                assignmentCompleted[i] = assignmentPending[i];
+                assignmentPending[i] = NULL;
                 break;
             case 2:
                 break;
@@ -48,10 +53,28 @@ void moveAssignment(Assignment** assignment,int number) {
 void showPendingAssigments(Assignment** assignment,int number) {
     printf("\n------TAREAS PENDIENTES------\n");
     for(int i = 0 ; i < number ; i++) {
-        printf("\n------TAREA %d------\n",i+1);
-        printf("ID: %d",assignment[i]->assignmentID);
-        printf("\nDescripcion de la tarea: %s",assignment[i]->description);
-        printf("\nDuracion de la tarea: %d",assignment[i]->duration);
+        if(assignment[i] != NULL) {            
+            printf("\n------TAREA %d------\n",i+1);
+            printf("ID: %d",assignment[i]->assignmentID);
+            printf("\nDescripcion de la tarea: %s",assignment[i]->description);
+            printf("\nDuracion de la tarea: %d",assignment[i]->duration);
+        }
+    }
+    for(int i = 0 ; i < number ; i++) {
+        free(assignment[i]);
+    }
+    free(assignment);
+}
+
+void showCompletedAssigments(Assignment** assignment,int number) {
+    printf("\n------TAREAS PENDIENTES------\n");
+    for(int i = 0 ; i < number ; i++) {
+        if(assignment[i] != NULL) {
+            printf("\n------TAREA %d------\n",i+1);
+            printf("ID: %d",assignment[i]->assignmentID);
+            printf("\nDescripcion de la tarea: %s",assignment[i]->description);
+            printf("\nDuracion de la tarea: %d",assignment[i]->duration);
+        }
     }
     for(int i = 0 ; i < number ; i++) {
         free(assignment[i]);
@@ -64,9 +87,11 @@ int main(int argc,char** argv) {
     printf("Ingresar la cantidad de tareas a realizar: ");
     scanf("%d",&numberAssignments);
     Assignment** assignments = malloc(numberAssignments*sizeof(*assignments));
-    for(int i = 0 ; i < numberAssignments ; i++) {
-        assignments[i] = NULL;
-    }
-
+    Assignment** assignmentsCompleted = malloc(numberAssignments*sizeof(*assignmentsCompleted));
+    initializeAssignments(assignments,assignmentsCompleted,numberAssignments);
+    assignmentsInterface(assignments,numberAssignments);
+    moveAssignment(assignmentsCompleted,assignments,numberAssignments);
+    showCompletedAssigments(assignmentsCompleted,numberAssignments);
+    showPendingAssigments(assignments,numberAssignments);
     return 0;
 }
