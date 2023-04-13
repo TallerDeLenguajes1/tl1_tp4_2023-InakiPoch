@@ -36,6 +36,17 @@ void assignmentsInterface(Assignment** assignment,int number) {
     free(buffer);
 }
 
+void searchAssignmentByKeyword(Assignment** assignment,int number,char* keyword) {
+    for(int i = 0 ; i < number ; i++) {
+        if(strstr(assignment[i]->description,keyword)) {            
+            printf("\n------TAREA CON PALABRA CLAVE %s ENCONTRADA------\n",keyword);
+            printf("ID: %d",assignment[i]->assignmentID);
+            printf("\nDescripcion de la tarea: %s",assignment[i]->description);
+            printf("\nDuracion de la tarea: %d",assignment[i]->duration);
+        }
+    }
+}
+
 void moveAssignment(Assignment** assignmentCompleted,Assignment** assignmentPending,int number) {
     int option;
     for(int i = 0 ; i < number ; i++) {
@@ -93,6 +104,7 @@ int main(int argc,char** argv) {
     Assignment** assignments = malloc(numberAssignments*sizeof(*assignments));
     Assignment** assignmentsCompleted = malloc(numberAssignments*sizeof(*assignmentsCompleted));
     initializeAssignments(assignments,assignmentsCompleted,numberAssignments);
+    searchAssignmentByKeyword(assignments,numberAssignments,'ola');
     assignmentsInterface(assignments,numberAssignments);
     moveAssignment(assignmentsCompleted,assignments,numberAssignments);
     showCompletedAssignments(assignmentsCompleted,numberAssignments);
