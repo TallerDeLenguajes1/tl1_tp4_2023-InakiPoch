@@ -1,9 +1,10 @@
 #include "list_functions.h"
 
-void assignmentsInterface(AssignmentNode** startingNode,int number) {
+void assignmentsInterface(AssignmentNode** startingNode) {
     char* buffer = (char*)malloc(100*sizeof(*buffer));
+    int addAssignment;
     Assignment assignment;
-    for(int i = 0 ; i < number ; i++) {
+    for(int i = 0 ; addAssignment ; i++) {
         fflush(stdin);
         printf("\n------TAREA %d------\n",i+1);
         assignment.assignmentID = i + 1;
@@ -16,6 +17,8 @@ void assignmentsInterface(AssignmentNode** startingNode,int number) {
         scanf("%d",&assignment.duration);
         fflush(stdin);
         addNode(startingNode,assignment);
+        printf("Agregar nueva tarea?\n1-SI\0-NO\n\n");
+        scanf("%d",&addAssignment);
     }
     free(buffer);
 }
