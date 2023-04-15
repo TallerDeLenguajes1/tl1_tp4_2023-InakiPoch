@@ -23,11 +23,11 @@ void assignmentsInterface(AssignmentNode** startingNode) {
     free(buffer);
 }
 
-void searchAssignmentByKeyword(Assignment** assignment,char* keyword) {
+void searchAssignmentByKeyword(AssignmentNode** startingNode,char* keyword) {
     AssignmentNode* tempNode = *startingNode;
     for(int i = 0 ; tempNode != NULL ; i++) {
         if(strstr(tempNode->assignment.description,keyword)) {
-            printf("\n------TAREA DE ID %d------\n",id);
+            printf("\n------TAREA CON %s CONTENIDA------\n",keyword);
             printf("ID: %d",tempNode->assignment.assignmentID);
             printf("\nDescripcion de la tarea: %s",tempNode->assignment.description);
             printf("\nDuracion de la tarea: %d\n",tempNode->assignment.duration);
@@ -95,6 +95,17 @@ void showCompletedAssignments(AssignmentNode* startingNode) {
             tempNode = tempNode->next;
         }
     }
+}
+
+int isAssignmentCompleted(AssignmentNode** completedAssignments,int id) {
+    AssignmentNode* tempNode = *completedAssignments;
+    while(tempNode != NULL) {
+        if(tempNode->assignment.assignmentID == id) {
+            return 1;
+        }
+        tempNode = tempNode->next;
+    }
+    return 0;
 }
 
 void freeMemory(AssignmentNode** startingNode) {
