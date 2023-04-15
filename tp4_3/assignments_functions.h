@@ -23,25 +23,29 @@ void assignmentsInterface(AssignmentNode** startingNode) {
     free(buffer);
 }
 
-void searchAssignmentByKeyword(Assignment** assignment,int number,char* keyword) {
-    for(int i = 0 ; i < number ; i++) {
-        if(strstr(assignment[i]->description,keyword)) {            
-            printf("\n------TAREA CON PALABRA CLAVE %s ENCONTRADA------\n",keyword);
-            printf("ID: %d",assignment[i]->assignmentID);
-            printf("\nDescripcion de la tarea: %s",assignment[i]->description);
-            printf("\nDuracion de la tarea: %d\n",assignment[i]->duration);
+void searchAssignmentByKeyword(Assignment** assignment,char* keyword) {
+    AssignmentNode* tempNode = *startingNode;
+    for(int i = 0 ; tempNode != NULL ; i++) {
+        if(strstr(tempNode->assignment.description,keyword)) {
+            printf("\n------TAREA DE ID %d------\n",id);
+            printf("ID: %d",tempNode->assignment.assignmentID);
+            printf("\nDescripcion de la tarea: %s",tempNode->assignment.description);
+            printf("\nDuracion de la tarea: %d\n",tempNode->assignment.duration);
         }
+        tempNode = tempNode->next;
     }
 }
 
-void searchAssignmentByID(Assignment** assignment,int number,int id) {
-    for(int i = 0 ; i < number ; i++) {
-        if(assignment[i]->assignmentID == id) {
+void searchAssignmentByID(AssignmentNode** startingNode,int id) {
+    AssignmentNode* tempNode = *startingNode;
+    for(int i = 0 ; tempNode != NULL ; i++) {
+        if(tempNode->assignment.assignmentID == id) {
             printf("\n------TAREA DE ID %d------\n",id);
-            printf("ID: %d",assignment[i]->assignmentID);
-            printf("\nDescripcion de la tarea: %s",assignment[i]->description);
-            printf("\nDuracion de la tarea: %d\n",assignment[i]->duration);
+            printf("ID: %d",tempNode->assignment.assignmentID);
+            printf("\nDescripcion de la tarea: %s",tempNode->assignment.description);
+            printf("\nDuracion de la tarea: %d\n",tempNode->assignment.duration);
         }
+        tempNode = tempNode->next;
     }
 }
 
