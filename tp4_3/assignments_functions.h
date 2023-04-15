@@ -1,37 +1,21 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "list_functions.h"
 
-typedef struct Tarea {
-    int assignmentID;
-    char* description;
-    int duration;
-} Assignment;
-
-void initializeAssignments(Assignment** assignment1,Assignment** assignment2,int number) {
-    for(int i = 0 ; i < number ; i++) {
-        assignment1[i] = NULL;
-    }
-    for(int i = 0 ; i < number ; i++) {
-        assignment2[i] = NULL;
-    }
-}
-
-void assignmentsInterface(Assignment** assignment,int number) {
+void assignmentsInterface(AssignmentNode** startingNode,int number) {
     char* buffer = (char*)malloc(100*sizeof(*buffer));
+    Assignment assignment;
     for(int i = 0 ; i < number ; i++) {
         fflush(stdin);
-        assignment[i] = (Assignment*)malloc(sizeof(*(assignment[i])));
         printf("\n------TAREA %d------\n",i+1);
-        assignment[i]->assignmentID = i + 1;
+        assignment.assignmentID = i + 1;
         printf("Descripcion de la tarea: ");
         gets(buffer);
         fflush(stdin);
-        assignment[i]->description = (char*)malloc(strlen(buffer) + 1);
-        strcpy(assignment[i]->description,buffer);
+        assignment.description = (char*)malloc(strlen(buffer) + 1);
+        strcpy(assignment.description,buffer);
         printf("\nDuracion de la tarea: ");
-        scanf("%d",&assignment[i]->duration);
+        scanf("%d",&assignment.duration);
         fflush(stdin);
+        addNode(startingNode,assignment);
     }
     free(buffer);
 }
@@ -47,7 +31,6 @@ void searchAssignmentByKeyword(Assignment** assignment,int number,char* keyword)
     }
 }
 
-
 void searchAssignmentByID(Assignment** assignment,int number,int id) {
     for(int i = 0 ; i < number ; i++) {
         if(assignment[i]->assignmentID == id) {
@@ -60,51 +43,60 @@ void searchAssignmentByID(Assignment** assignment,int number,int id) {
 }
 
 
-void moveAssignment(Assignment** assignmentCompleted,Assignment** assignmentPending,int number) {
+void moveAssignment(AssignmentNode** assignmentCompleted,AssignmentNode** assignmentPending) {
     int option;
-    for(int i = 0 ; i < number ; i++) {
+    AssignmentNode* tempNode = *assignmentPending;
+    for(int i = 0 ; tempNode != NULL ; i++) {
         printf("\nSe realizo la tarea %d?\n1-SI\n2-NO\n",i+1);
         scanf("%d",&option);
         switch(option) {
             case 1:
-                assignmentCompleted[i] = (Assignment*)malloc(sizeof(*(assignmentCompleted[i])));
-                assignmentCompleted[i] = assignmentPending[i];
-                assignmentPending[i] = NULL;
+                addNode(assignmentCompleted,tempNode->assignment);
+                removeNode(assignmentPending,tempNode->assignment);
                 break;
             case 2:
                 break;
         }
         fflush(stdin);
+        tempNode = tempNode->next;
     }
 }
 
-void showPendingAssignments(Assignment** assignment,int number) {
-    printf("\n------TAREAS PENDIENTES------\n");
-    for(int i = 0 ; i < number ; i++) {
-        if(assignment[i] != NULL) {            
+void showPendingAssignments(AssignmentNode* startingNode) {
+    if(startingNode != NULL) {
+        printf("\n------TAREAS PENDIENTES------\n");
+        AssignmentNode* tempNode = startingNode;
+        for(int i = 0 ; tempNode ; i++) {
             printf("\n------TAREA %d------\n",i+1);
-            printf("ID: %d",assignment[i]->assignmentID);
-            printf("\nDescripcion de la tarea: %s",assignment[i]->description);
-            printf("\nDuracion de la tarea: %d",assignment[i]->duration);
+            printf("ID: %d",tempNode->assignment.assignmentID);
+            printf("\nDescripcion de la tarea: %s",tempNode->assignment.description);
+            printf("\nDuracion de la tarea: %d",tempNode->assignment.duration);
+            tempNode = tempNode->next;
         }
     }
 }
 
-void showCompletedAssignments(Assignment** assignment,int number) {
-    printf("\n------TAREAS COMPLETADAS------\n");
-    for(int i = 0 ; i < number ; i++) {
-        if(assignment[i] != NULL) {
+void showCompletedAssignments(AssignmentNode* startingNode) {
+    if(startingNode != NULL) {
+        printf("\n------TAREAS COMPLETADAS------\n");
+        AssignmentNode* tempNode = startingNode;
+        for(int i = 0 ; tempNode ; i++) {
             printf("\n------TAREA %d------\n",i+1);
-            printf("ID: %d",assignment[i]->assignmentID);
-            printf("\nDescripcion de la tarea: %s",assignment[i]->description);
-            printf("\nDuracion de la tarea: %d",assignment[i]->duration);
+            printf("ID: %d",tempNode->assignment.assignmentID);
+            printf("\nDescripcion de la tarea: %s",tempNode->assignment.description);
+            printf("\nDuracion de la tarea: %d",tempNode->assignment.duration);
+            tempNode = tempNode->next;
         }
     }
 }
 
-void freeMemory(Assignment** assignment,int number) {
-    for(int i = 0 ; i < number ; i++) {
-        free(assignment[i]);
+void freeMemory(AssignmentNode** startingNode) {
+    AssignmentNode* tempNode = *startingNode;
+    AssignmentNode* deleteNode = *startingNode;
+    while(tempNode != NULL) {
+        deleteNode = tempNode;
+        tempNode = tempNode->next;
+        free(deleteNode);
     }
-    free(assignment);
+    free(startingNode);
 }
