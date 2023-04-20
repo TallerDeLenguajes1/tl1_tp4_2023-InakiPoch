@@ -108,6 +108,17 @@ int isAssignmentCompleted(AssignmentNode** completedAssignments,int id) {
     return 0;
 }
 
+void showData(AssignmentNode** startingNode) {
+    AssignmentNode* tempNode = *startingNode;
+    int numberAssignments = 0;
+    int totalTime = 0;
+    while(tempNode != NULL) {
+        totalTime += tempNode->assignment.assignmentID;
+        numberAssignments++;
+    }
+    printf("Cantidad de tareas: %d\nTiempo asociado a la lista: %d",numberAssignments,totalTime);
+}
+
 void freeMemory(AssignmentNode** startingNode) {
     AssignmentNode* tempNode = *startingNode;
     AssignmentNode* deleteNode = *startingNode;
