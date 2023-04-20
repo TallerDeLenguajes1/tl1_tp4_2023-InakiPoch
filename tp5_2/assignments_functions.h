@@ -38,11 +38,7 @@ Assignment searchAssignmentByKeyword(AssignmentNode** startingNode,char* keyword
     AssignmentNode* tempNode = *startingNode;
     for(int i = 0 ; tempNode != NULL ; i++) {
         if(strstr(tempNode->assignment.description,keyword)) {
-            printf("\n------TAREA CON %s CONTENIDA------\n",keyword);
-            printf("ID: %d",tempNode->assignment.assignmentID);
-            printf("\nDescripcion de la tarea: %s",tempNode->assignment.description);
-            printf("\nDuracion de la tarea: %d\n",tempNode->assignment.duration);
-            return tempNode->assignment;
+            break;
         }
         tempNode = tempNode->next;
     }
@@ -53,11 +49,7 @@ Assignment searchAssignmentByID(AssignmentNode** startingNode,int id) {
     AssignmentNode* tempNode = *startingNode;
     for(int i = 0 ; tempNode != NULL ; i++) {
         if(tempNode->assignment.assignmentID == id) {
-            printf("\n------TAREA DE ID %d------\n",id);
-            printf("ID: %d",tempNode->assignment.assignmentID);
-            printf("\nDescripcion de la tarea: %s",tempNode->assignment.description);
-            printf("\nDuracion de la tarea: %d\n",tempNode->assignment.duration);
-            return tempNode->assignment;
+            break;
         }
         tempNode = tempNode->next;
     }
@@ -134,7 +126,7 @@ void moveAssignment(AssignmentNode** assignmentCompleted,AssignmentNode** assign
                             printf("\nLa tarea ya fue completada\n");
                         }
                         else {
-                            addNode(assignmentCompleted,searchAssignmentByID(assignmentPending,id));
+                            addNode(inProcessList,searchAssignmentByID(assignmentPending,id));
                             removeNode(assignmentPending,searchAssignmentByID(assignmentPending,id));
                         }
                     }
