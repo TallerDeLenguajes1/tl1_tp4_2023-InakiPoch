@@ -17,7 +17,7 @@ void assignmentsInterface(AssignmentNode** startingNode) {
         scanf("%d",&assignment.duration);
         fflush(stdin);
         addNode(startingNode,assignment);
-        printf("Agregar nueva tarea?\n1-SI\0-NO\n\n");
+        printf("\nAgregar nueva tarea?\n1-SI\n0-NO\n");
         scanf("%d",&addAssignment);
     }
     free(buffer);
@@ -106,17 +106,6 @@ int isAssignmentCompleted(AssignmentNode** completedAssignments,int id) {
         tempNode = tempNode->next;
     }
     return 0;
-}
-
-void showData(AssignmentNode** startingNode) {
-    AssignmentNode* tempNode = *startingNode;
-    int numberAssignments = 0;
-    int totalTime = 0;
-    while(tempNode != NULL) {
-        totalTime += tempNode->assignment.assignmentID;
-        numberAssignments++;
-    }
-    printf("Cantidad de tareas: %d\nTiempo asociado a la lista: %d",numberAssignments,totalTime);
 }
 
 void freeMemory(AssignmentNode** startingNode) {

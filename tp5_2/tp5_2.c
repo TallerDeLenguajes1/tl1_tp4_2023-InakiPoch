@@ -3,21 +3,14 @@
 int main(int argc,char** argv) {
     AssignmentNode* assignments = createList();
     AssignmentNode* completedAssignments = createList();
+    AssignmentNode* inProcessAssignments = createList();
     AssignmentNode** pAssignments = &assignments;
     AssignmentNode** pCompleted = &completedAssignments;
+    AssignmentNode** pInProcess = &inProcessAssignments;
     assignmentsInterface(pAssignments);
-    moveAssignment(pCompleted,pAssignments);
-    searchAssignmentByKeyword(assignments,"ola");
-    searchAssignmentByID(assignments,2);
-    showCompletedAssignments(*pCompleted);
-    showPendingAssignments(*pAssignments);
-    if(isAssignmentCompleted(completedAssignments,2)) {
-        printf("\nTarea completada");
-    }
-    else {
-        printf("\nTarea pendiente");
-    }
+    moveAssignment(pCompleted,pAssignments,pInProcess);
     freeMemory(pAssignments);
     freeMemory(pCompleted);
+    freeMemory(pInProcess);
     return 0;
 }

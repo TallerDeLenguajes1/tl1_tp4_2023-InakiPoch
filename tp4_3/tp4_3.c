@@ -3,10 +3,8 @@
 int main(int argc,char** argv) {
     AssignmentNode* assignments = createList();
     AssignmentNode* completedAssignments = createList();
-    AssignmentNode* inProcessAssignments = createList();
     AssignmentNode** pAssignments = &assignments;
     AssignmentNode** pCompleted = &completedAssignments;
-    AssignmentNode** pInProcess = &inProcessAssignments;
     assignmentsInterface(pAssignments);
     moveAssignment(pCompleted,pAssignments);
     searchAssignmentByKeyword(assignments,"ola");
